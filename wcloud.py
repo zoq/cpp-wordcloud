@@ -5,6 +5,3 @@ def wordcloud(words, filename='output.png', height=2000, width=4000):
     word_cloud = WordCloud(stopwords=STOPWORDS, background_color='white', height=height, width=width).generate(words)
     word_cloud.to_file(filename)
     return 1
-
-
-wordcloud("the;the;the;one;two")
