@@ -1,8 +1,14 @@
+#ifndef WORD_CLOUD_CPP
+#define WORD_CLOUD_CPP
+
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <string>
 
-int WordCloud(const std::string& words, const std::string& filename = "output.png", const int width = 2000, const int height = 4000)
+int WordCloud(const std::string& words,
+              const std::string& filename = "output.png",
+              const int width = 2000,
+              const int height = 4000)
 {
     PyObject *pName, *pModule, *pFunc;
     PyObject *pArgs, *pValue;
@@ -11,6 +17,7 @@ int WordCloud(const std::string& words, const std::string& filename = "output.pn
     Py_Initialize();
     PyRun_SimpleString("import sys");
     PyRun_SimpleString("sys.path.append(\".\")");
+    PyRun_SimpleString("sys.path.append(\"/srv/conda/envs/notebook/include/\")");
     pName = PyUnicode_DecodeFSDefault("wcloud");
 
     pModule = PyImport_Import(pName);
@@ -40,7 +47,6 @@ int WordCloud(const std::string& words, const std::string& filename = "output.pn
             Py_DECREF(pArgs);
             if (pValue != NULL)
             {
-                printf("Result of call: %ld\n", PyLong_AsLong(pValue));
                 Py_DECREF(pValue);
             }
             else
@@ -65,9 +71,8 @@ int WordCloud(const std::string& words, const std::string& filename = "output.pn
         PyErr_Print();
         return 1;
     }
-    if (Py_FinalizeEx() < 0)
-    {
-        return 120;
-    }
+
     return 0;
 }
+
+#endif
